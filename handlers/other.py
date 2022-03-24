@@ -1,4 +1,6 @@
 from aiogram import types # импортируем типы данных
+from create_bot import dp
+import json, string # string - берем из него знаки пунктуации
 
 @dp.message_handler()# записываем первую функцию сюда будет попадать пустой декоратор, когда в наш чат кто-то что-то пишет
 async def echo_send(message : types.Message): # указываем асинхронную функцию, в которую будут попадать любые текстовые сообщения для бота
