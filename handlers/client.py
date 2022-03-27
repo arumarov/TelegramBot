@@ -1,11 +1,14 @@
 from aiogram import types, Dispatcher # импортируем типы данных
 from create_bot import dp, bot
+from keyboards import kb_client
+from aiogram.types import ReplyKeyboardRemove
 
 # @dp.message_handler(commands = ['start', 'help']) # указываем декоратор и в аргументах указываем команды, на которые будет реагировать нащ бот
 # сработает, когда пользователь напишет команду /start либо команду /help. Handler сработает как только пользователь добавится к нашему боту
 async def command_start(message : types.Message):
-    try: # обрабатываеи ошибку (если не получится отправить сообщение пользователю - если он не добавил бота)
-        await bot.send_message(message.from_user.id, 'Приятного аппетита') # записываем код, который сработает после команды /start либо команды /help.
+    try: # обрабатываем ошибку (если не получится отправить сообщение пользователю - если он не добавил бота)
+        # записываем код, который сработает после команды /start либо команды /help.
+        await bot.send_message(message.from_user.id, 'Приятного аппетита', reply_markup=kb_client) # также отправляем клавиатуру
         await message.delete() # будем удалять сообщение, если оно не доставлено
     except: # не будем указывать конкретную ошибку
         await message.reply('Общение с ботом через ЛС, напишите ему:\nhttps://t.me/Pizza_arumarov_bot') # данное условие выполнится, если пользователь еще не добавлялся к боту
@@ -16,7 +19,7 @@ async def pizza_open_command(message: types.Message):
 
 # @dp.message_handler(commands = ['Расположение'])
 async def pizza_place_command(message : types.Message):
-    await bot.send_message(message.from_user.id, 'ул. Колбасная 15')
+    await bot.send_message(message.from_user.id, 'ул. Колбасная 15', reply_markup=ReplyKeyboardRemove()) # ReplyKeyboardRemove удаляет клавиатуру
 
 
 # @dp.message_handler(commands = ['Меню'])
