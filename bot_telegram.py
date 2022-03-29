@@ -7,8 +7,9 @@ async def on_startup(_): # пишем функцию, которая запус�
 from handlers import client, admin, other # импортируем файлы
 
 client.register_handlers_client(dp)
-other.register_handlers_other(dp)
 admin.register_handlers_admin(dp)
+other.register_handlers_other(dp)
+
 
 executor.start_polling(dp, skip_updates = True, on_startup = on_startup) # записываем команду запуска бота
 # skip_updates = True - команда, чтобы бот не отвечал на сообщения, которые приходят, пока бот офлайн
