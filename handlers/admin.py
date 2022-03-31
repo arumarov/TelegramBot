@@ -3,6 +3,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types, Dispatcher
 from create_bot import dp, bot
 from aiogram.dispatcher.filters import Text
+from data_base import sqlite_db
 
 ID = None
 
@@ -65,9 +66,8 @@ async def load_price(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['price'] = float(message.text) 
    
-        async with state.proxy() as data:
-            await message.reply(str(data)) # выводим то, что записано в словарь
-       # после выполнения следующей команды бот выходит из машинных состояний и очищает то, что было записано
+        await sqlite_db.sql_add_command(state) # передаем в базу данных собранный словарь
+       # после выполнения следующей команды бот выходит из машинных состояний и завершает машину состояний
         await state.finish() 
 
 # Выход из состояний

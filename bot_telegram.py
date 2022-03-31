@@ -1,8 +1,11 @@
 from aiogram.utils import executor # для запуска бота, чтобы он вышел в онлайн
 from create_bot import dp
+from data_base import sqlite_db
+
 
 async def on_startup(_): # пишем функцию, которая запускается при выходе бота в онлайн(без декоратора) 
-    print('Бот вышел в онлайн') # далее, ниже передаем эту функцию в executor, функция выводит сообщение в консоль
+    print('Бот вышел в онлайн')  # далее, ниже передаем эту функцию в executor, функция выводит сообщение в консоль
+    sqlite_db.sql_start() # при старте бота запускаем функцию подключения/ создания базы данных
 
 from handlers import client, admin, other # импортируем файлы
 

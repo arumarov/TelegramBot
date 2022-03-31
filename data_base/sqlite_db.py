@@ -12,6 +12,8 @@ def sql_start(): # описываем функцию по созданию ба�
     base.commit() # сохранение изменений
 
 async def sql_add_command(state):
-    async with state.proxy() as data:
+    async with state.proxy() as data: # открываем словарь
+        # далее в таблицу вставляются значения
+        # переводим данные в кортеж (особенность sqlite)
         cur.execute('INSERT INTO menu VALUES(?, ?, ?, ?)', tuple(data.values()))
-        base.commit()
+        base.commit() # сохраняем изменения
