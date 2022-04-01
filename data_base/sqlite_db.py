@@ -1,4 +1,5 @@
 import sqlite3 as sq # импортируем модуль базы данных
+from create_bot import bot
 
 def sql_start(): # описываем функцию по созданию базы данных, или подключение, если она уже создана
     global base, cur
@@ -17,3 +18,8 @@ async def sql_add_command(state):
         # переводим данные в кортеж (особенность sqlite)
         cur.execute('INSERT INTO menu VALUES(?, ?, ?, ?)', tuple(data.values()))
         base.commit() # сохраняем изменения
+
+# Отправление пользователю информации о товаре
+async def sql_read(message):
+    for ret in cur.execute('SELECT * FROM menu').fetchall():
+        await bot.send_photo(message.from_user.id, ret[0], f'{ret[1]}\nОписание: {ret[2]}\nЦена {ret[-1]}')
