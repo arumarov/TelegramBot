@@ -72,12 +72,12 @@ async def load_price(message: types.Message, state: FSMContext):
        # после выполнения следующей команды бот выходит из машинных состояний и завершает машину состояний
         await state.finish() 
 
-@dp.callback.query_handler(Lambda x: x.data and x.data.startswith('del '))
+#@dp.callback_query_handler(lambda x: x.data and x.data.startswith('del '))
 async def del_callback_run(callback_query: types.CallbackQuery):
     await sqlite_db.sql_delete_command(callback_query.data.replace('del ', ''))
     await callback_query.answer(text=f'{callback_query.data.replace("del ", "")} удалена.', show_alert=True)
 
-@dp.message_handler(commands='Удалить')
+#@dp.message_handler(commands='Удалить')
 async def delete_item(message: types.Message):
     if message.from_user.id == ID:
         read = await sqlite_db.sql_read2()
@@ -104,6 +104,10 @@ def register_handlers_admin(dp : Dispatcher):
     dp.register_message_handler(load_name, state=FSMAdmin.name)
     dp.register_message_handler(load_description, state=FSMAdmin.description)
     dp.register_message_handler(load_price, state=FSMAdmin.price)
+    dp.register_callback_query_handler(del_callback_run, lambda x: x.data and x.data.startswith('del '))
+    dp.register_message_handler(delete_item, commands='Удалить')    
     dp.register_message_handler(cancel_handler, state="*", commands='отмена')
     dp.register_message_handler(cancel_handler, Text(equals='отмена', ignore_case=True), state="*")
     dp.register_message_handler(make_changes_command, commands=['moderator'], is_chat_admin=True)
+
+
